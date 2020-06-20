@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
     <ion-toolbar>
         <ion-title>
-            Blank
+            Home
         </ion-title>
     </ion-toolbar>
 </ion-header>
@@ -9,12 +9,16 @@
 <ion-content [fullscreen]="true">
     <ion-header collapse="condense">
         <ion-toolbar>
-            <ion-title size="large">Blank</ion-title>
+            <ion-title size="large">CAT FACTS</ion-title>
         </ion-toolbar>
     </ion-header>
-
-    <src="
-    <ion-button color="secondary " size="small">New Cat Fact</ion-button>
-    <ion-button color="secondary" size="small">My Cat Facts</ion-button>
+    <div>
+        <img src="../../assets/img/cat.png" alt="cat"/>
+    </div>
+    <hr>
+    <div>
+        <ion-button color="warning" expand="block" (click)="navigateToCreateCatfact()">New Cat Fact</ion-button>
+    </div>
+    <ion-button color="success" expand="block" (click)="navigateTolistCatfacts()">My Cat Facts</ion-button>
 
 </ion-content>
