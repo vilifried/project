@@ -17,7 +17,15 @@
                 <h2>{{item.title}}</h2>
                 <p> {{item.catfact}}</p>
             </ion-label>
+            <ion-button size="small" fill="outline" color="danger" (click)="navigateToUpdateCatfact(i)">
+                <ion-icon name="close-outline"></ion-icon>
+            </ion-button>
+            <ion-button size="small" fill="outline" color="danger" (click)="navigateToViewCatfact(i)">
+                <ion-icon name="chevron-forward-outline"></ion-icon>
+            </ion-button>
         </ion-item>
     </ion-list>
-    <ion-button size="small" expand="block" fill="outline" (click)="clearList()">Clear List</ion-button>
+    <ion-button id="delete-button" size="small" expand="block" fill="outline" color="danger" strong="true"
+                (click)="presentAlert()">Delete All Cat Facts
+    </ion-button>
 </ion-content>

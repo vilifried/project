@@ -6,33 +6,32 @@ import {Storage} from '@ionic/storage';
 })
 export class LocalStorageService {
 
-    myCatfactListList: Array<{ img: any, catfact: string }>;
+    myCatfactList: Array<{ title: string, img: any, catfact: string }>;
 
     constructor(private storage: Storage) {
     }
 
     async readStorage() {
         await this.storage.get('localCatfactList').then((val) => {
-            this.myCatfactListList = val;
-            if (this.myCatfactListList === null) {
-                this.myCatfactListList = [];
-                this.storage.set('localCatfactList', this.myCatfactListList);
+            this.myCatfactList = val;
+            if (this.myCatfactList === null) {
+                this.myCatfactList = [];
+                this.storage.set('localCatfactList', this.myCatfactList);
             }
         });
-        return this.myCatfactListList;
+        return this.myCatfactList;
     }
 
-    addItem(imgToAdd: any, catfactToAdd: string) {
-        this.myCatfactListList.push({img: imgToAdd, catfact: catfactToAdd});
-        this.storage.set('localCatfactList', this.myCatfactListList);
+    addItem(titleToAdd: string, imgToAdd: any, catfactToAdd: string) {
+        this.myCatfactList.push({title: titleToAdd, img: imgToAdd, catfact: catfactToAdd});
+        this.storage.set('localCatfactList', this.myCatfactList);
     }
 
     editItem(itemId: number, imgToEdit: any, catfactToEdit: string) {
-        this.myCatfactListList[itemId].img = imgToEdit;
-        this.myCatfactListList[itemId].catfact = catfactToEdit;
-        this.storage.set('localCatfactList', this.myCatfactListList);
+        this.myCatfactList[itemId].img = imgToEdit;
+        this.myCatfactList[itemId].catfact = catfactToEdit;
+        this.storage.set('localCatfactList', this.myCatfactList);
     }
-
 
     clearList() {
         this.storage.clear().then(r => console.log(r + 'cleared'));

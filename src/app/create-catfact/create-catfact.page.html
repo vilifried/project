@@ -8,9 +8,9 @@
 </ion-header>
 
 <ion-content>
-    <ion-card>
-        <ion-progress-bar [type]="'indeterminate'" *ngIf="showLoader"></ion-progress-bar>
-        <img [src]="catImage"/>
+    <ion-progress-bar [type]="'indeterminate'" *ngIf="showLoader"></ion-progress-bar>
+    <ion-card *ngIf='cardElement'>
+        <img id="cardImg" [src]="catImage"/>
         <ion-card-header>
             <ion-card-title color="primary">Cat Fact # {{arrayIndexNumber}}</ion-card-title>
         </ion-card-header>
@@ -18,13 +18,24 @@
             {{catfactText}}
         </ion-card-content>
     </ion-card>
-
-    <div class="container">
+    <div class="container" *ngIf='buttonContainerElement'>
         <div class="center">
-            <ion-button color="primary" size="small" (click)="addItem()">Save</ion-button>
+            <ion-button color="primary" size="small" (click)="showTitleInputHideButtons()">Save</ion-button>
             <ion-button color="primary" size="small" (click)="nextItem()">Next</ion-button>
-            <ion-button color="primary" size="small" (click)="showSavedCatfact()">show</ion-button>
         </div>
+    </div>
+
+    <div *ngIf='titleInputElement'>
+        <ion-item>
+            <ion-label position="fixed">Title</ion-label>
+            <ion-input clearInput [(ngModel)]="catfactTitle"></ion-input>
+            <ion-button size="small" (click)="addItem()">
+                <ion-icon name="checkmark-circle-outline"></ion-icon>
+            </ion-button>
+            <ion-button size="small" (click)="hideTitleInputShowButtons()">
+                <ion-icon name="close-circle-outline"></ion-icon>
+            </ion-button>
+        </ion-item>
     </div>
 
 </ion-content>

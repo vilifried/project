@@ -3,6 +3,7 @@ import {HttpResponse} from '@angular/common/http';
 import {CatfactService} from '../services/catfact.service';
 import {ImageService} from '../services/image.service';
 import {LocalStorageService} from '../services/local-storage.service';
+import {ToastController} from '@ionic/angular';
 
 @Component({
     selector: 'app-create-catfact',
@@ -23,16 +24,23 @@ export class CreateCatfactPage implements OnInit {
 
     showLoader: boolean;
 
-    myCatfactList: Array<{ img: any, catfact: string }>;
+    myCatfactList: Array<{ title: string, img: any, catfact: string }>;
+
+    catfactTitle: string;
+
+    titleInputElement = false;
+    buttonContainerElement = true;
+    cardElement = true;
 
     constructor(private catfactService: CatfactService,
                 private imageService: ImageService,
-                private localStorageService: LocalStorageService) {
+                private localStorageService: LocalStorageService,
+                private toastController: ToastController) {
         this.arrayIndexNumber = 0;
     }
 
     getImageFromService() {
-        this.showProgressBar();
+        this.showProgressBarHideCard();
         this.isImageLoading = true;
         this.imageService.getImage(this.imgUrl).subscribe(data => {
             this.createImageFromBlob(data);
@@ -53,7 +61,7 @@ export class CreateCatfactPage implements OnInit {
         if (image) {
             reader.readAsDataURL(image);
         }
-        this.hideProgressBar();
+        this.hideProgressBarShowCard();
     }
 
     getHttpResponseObjectFromService() {
@@ -83,25 +91,41 @@ export class CreateCatfactPage implements OnInit {
     }
 
     addItem() {
-        this.localStorageService.addItem(this.catImage, this.catfactText);
+        this.localStorageService.addItem(this.catfactTitle, this.catImage, this.catfactText);
+        this.hideTitleInputShowButtons();
+        this.presentToast();
+        this.catfactTitle = '';
     }
 
-    showSavedCatfact() {
-        this.localStorageService.readStorage().then((value) => {
-            this.myCatfactList = value;
-            this.catImage = value[0].img;
-            this.catfactText = value[0].catfact;
+    async presentToast() {
+        const toast = await this.toastController.create({
+            message: 'Cat Fact Saved.',
+            duration: 2000
         });
+        toast.present();
     }
 
+    showTitleInputHideButtons() {
+        this.titleInputElement = true;
+        this.buttonContainerElement = false;
+    }
 
-    showProgressBar() {
+    hideTitleInputShowButtons() {
+        this.titleInputElement = false;
+        this.buttonContainerElement = true;
+    }
+
+    showProgressBarHideCard() {
         this.catImage = null;
         this.showLoader = true;
+        this.cardElement = false;
+        this.buttonContainerElement = false;
     }
 
-    hideProgressBar() {
+    hideProgressBarShowCard() {
         this.showLoader = false;
+        this.cardElement = true;
+        this.buttonContainerElement = true;
     }
 
     ngOnInit() {

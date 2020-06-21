@@ -1,9 +1,27 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>viewSingleCatfact</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button [routerLink]="['/list-catfacts']"></ion-back-button>
+        </ion-buttons>
+        <ion-title>View Catfact</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
+    <ion-card>
+        <img id="cardImg" [src]="catImage"/>
+        <ion-card-header>
+            <ion-card-title color="primary">{{catfactTitle}}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            {{catfactText}}
+        </ion-card-content>
+    </ion-card>
+    <div class="container">
+        <div class="center">
+            <ion-button class="center" color="primary" size="small" (click)="navigateToUpdatecatfact()">Edit
+            </ion-button>
+        </div>
+    </div>
 
 </ion-content>
