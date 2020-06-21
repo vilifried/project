@@ -44,6 +44,6 @@ export class ViewSingleCatfactPage implements OnInit {
     }
 
     navigateToUpdatecatfact() {
-
+        this.router.navigate(['/update-catfact', {itemId: this.itemId}]);
     }
 }
