@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {HttpResponse} from '@angular/common/http';
 import {CatfactService} from '../services/catfact.service';
 import {ImageService} from '../services/image.service';
+import {LocalStorageService} from '../services/local-storage.service';
 
 @Component({
     selector: 'app-create-catfact',
@@ -11,19 +12,22 @@ import {ImageService} from '../services/image.service';
 export class CreateCatfactPage implements OnInit {
 
     imgUrl = 'https://api.thecatapi.com/v1/images/search?format=src';
-    imageToShow: any;
+    catImage: any;
     isImageLoading: boolean;
 
-    catFactsUrl= 'https://cat-fact.herokuapp.com/facts';
+    catFactsUrl = 'https://cat-fact.herokuapp.com/facts';
     isCatFactLoading: boolean;
     arrayIndexNumber: number;
-    catFactItemText: string;
-    statusCode: number;
-    url: string;
+    catfactText: string;
+    httpStatusCode: number;
 
     showLoader: boolean;
 
-    constructor(private catfactService: CatfactService, private imageService: ImageService) {
+    myCatfactList: Array<{ img: any, catfact: string }>;
+
+    constructor(private catfactService: CatfactService,
+                private imageService: ImageService,
+                private localStorageService: LocalStorageService) {
         this.arrayIndexNumber = 0;
     }
 
@@ -43,7 +47,7 @@ export class CreateCatfactPage implements OnInit {
     createImageFromBlob(image: Blob) {
         const reader = new FileReader();
         reader.addEventListener('load', () => {
-            this.imageToShow = reader.result;
+            this.catImage = reader.result;
         }, false);
 
         if (image) {
@@ -64,24 +68,35 @@ export class CreateCatfactPage implements OnInit {
     }
 
     createStringFromHttpResponseObject(response: HttpResponse<any>) {
-        if (response.body['all'].length > this.arrayIndexNumber) {
+        if (response.body.all.length > this.arrayIndexNumber) {
             this.arrayIndexNumber++;
         } else {
             this.arrayIndexNumber = 0;
         }
-        this.catFactItemText = response.body['all'][this.arrayIndexNumber]['text'];
-        this.statusCode = response.status;
-        this.url = response.url;
+        this.catfactText = response.body.all[this.arrayIndexNumber].text;
+        this.httpStatusCode = response.status;
     }
 
-    // action for floating action button
     nextItem() {
         this.getImageFromService();
         this.getHttpResponseObjectFromService();
     }
 
+    addItem() {
+        this.localStorageService.addItem(this.catImage, this.catfactText);
+    }
+
+    showSavedCatfact() {
+        this.localStorageService.readStorage().then((value) => {
+            this.myCatfactList = value;
+            this.catImage = value[0].img;
+            this.catfactText = value[0].catfact;
+        });
+    }
+
+
     showProgressBar() {
-        this.imageToShow = null;
+        this.catImage = null;
         this.showLoader = true;
     }
 
@@ -90,8 +105,12 @@ export class CreateCatfactPage implements OnInit {
     }
 
     ngOnInit() {
-        this.getImageFromService();
-        this.getHttpResponseObjectFromService();
+        this.localStorageService.readStorage().then((value) => {
+            this.myCatfactList = value;
+            this.getImageFromService();
+            this.getHttpResponseObjectFromService();
+        });
     }
-
 }
+
+

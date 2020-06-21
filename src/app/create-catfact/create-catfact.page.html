@@ -3,28 +3,27 @@
         <ion-buttons slot="start">
             <ion-back-button [routerLink]="['/home']"></ion-back-button>
         </ion-buttons>
-        <ion-title>createCatfact</ion-title>
+        <ion-title>New Cat Facts</ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
     <ion-card>
+        <ion-progress-bar [type]="'indeterminate'" *ngIf="showLoader"></ion-progress-bar>
+        <img [src]="catImage"/>
         <ion-card-header>
             <ion-card-title color="primary">Cat Fact # {{arrayIndexNumber}}</ion-card-title>
-            <!--            <ion-card-subtitle color="warning">Status Code {{statusCode}}</ion-card-subtitle>-->
-            <!--            <ion-card-subtitle>URL: {{url}}</ion-card-subtitle>-->
         </ion-card-header>
-        <ion-progress-bar [type]="'indeterminate'" *ngIf="showLoader"></ion-progress-bar>
-        <img [src]="imageToShow">
         <ion-card-content>
-            {{catFactItemText}}
+            {{catfactText}}
         </ion-card-content>
     </ion-card>
 
     <div class="container">
         <div class="center">
-            <ion-button color="primary" size="small">Save</ion-button>
+            <ion-button color="primary" size="small" (click)="addItem()">Save</ion-button>
             <ion-button color="primary" size="small" (click)="nextItem()">Next</ion-button>
+            <ion-button color="primary" size="small" (click)="showSavedCatfact()">show</ion-button>
         </div>
     </div>
 
