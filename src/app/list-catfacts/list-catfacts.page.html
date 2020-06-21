@@ -14,9 +14,10 @@
                 <img [src]=item.img>
             </ion-avatar>
             <ion-label>
-                <h2>Finn</h2>
+                <h2>{{item.title}}</h2>
                 <p> {{item.catfact}}</p>
             </ion-label>
         </ion-item>
     </ion-list>
+    <ion-button size="small" expand="block" fill="outline" (click)="clearList()">Clear List</ion-button>
 </ion-content>
