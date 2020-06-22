@@ -8,5 +8,21 @@
 </ion-header>
 
 <ion-content>
-
+    <ion-card>
+        <img id="cardImg" [src]="catImage"/>
+        <ion-card-header>
+            <ion-card-title color="primary">{{catfactTitle}}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            {{catfactText}}
+        </ion-card-content>
+    </ion-card>
 </ion-content>
+<ion-footer class="ion-no-border">
+    <ion-toolbar>
+        <div class="center">
+            <ion-button color="primary" size="small" fill="outline" (click)="navigateToUpdatecatfact()">Edit
+            </ion-button>
+        </div>
+    </ion-toolbar>
+</ion-footer>

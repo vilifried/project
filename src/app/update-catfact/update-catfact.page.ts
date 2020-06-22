@@ -9,14 +9,25 @@ import {LocalStorageService} from '../services/local-storage.service';
 })
 export class UpdateCatfactPage implements OnInit {
 
+    localStorage: LocalStorageService;
     itemId: number;
+    catfactTitle: string;
+    catfactText: string;
+    catImage: any;
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
                 private localStorageService: LocalStorageService) {
         if (this.route.snapshot.paramMap.get('itemId')) {
             this.itemId = Number(this.route.snapshot.paramMap.get('itemId'));
+            this.localStorage = localStorageService;
         }
+    }
+
+    loadSingleCatfact() {
+        this.catImage = this.localStorage.myCatfactList[this.itemId].img;
+        this.catfactText = this.localStorage.myCatfactList[this.itemId].catfact;
+        this.catfactTitle = this.localStorage.myCatfactList[this.itemId].title;
     }
 
     navigateToViewCatfact(parameter: number) {
@@ -24,6 +35,8 @@ export class UpdateCatfactPage implements OnInit {
     }
 
     ngOnInit() {
+        this.localStorage.readStorage().then((value) => {
+            this.loadSingleCatfact();
+        });
     }
-
 }
