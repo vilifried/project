@@ -10,7 +10,7 @@ import {AlertController, ToastController} from '@ionic/angular';
 })
 export class ViewSingleCatfactPage implements OnInit {
 
-    myCatfactList: Array<{ title: string, img: any, catfact: string }>;
+    localStorage: LocalStorageService;
 
     itemId: number;
     catfactTitle: string;
@@ -24,26 +24,24 @@ export class ViewSingleCatfactPage implements OnInit {
                 private toastController: ToastController) {
         if (this.route.snapshot.paramMap.get('itemId')) {
             this.itemId = Number(this.route.snapshot.paramMap.get('itemId'));
+            this.localStorage = localStorageService;
         }
     }
 
     loadSingleCatfact() {
-        this.localStorageService.readStorage().then((value) => {
-            this.myCatfactList = value;
-            this.catImage = value[this.itemId].img;
-            this.catfactText = value[this.itemId].catfact;
-            this.catfactTitle = value[this.itemId].title;
-        });
-    }
-
-    ngOnInit() {
-        this.localStorageService.readStorage().then((value) => {
-            this.myCatfactList = value;
-            this.loadSingleCatfact();
-        });
+        this.catImage = this.localStorage.myCatfactList[this.itemId].img;
+        this.catfactText = this.localStorage.myCatfactList[this.itemId].catfact;
+        this.catfactTitle = this.localStorage.myCatfactList[this.itemId].title;
     }
 
     navigateToUpdatecatfact() {
         this.router.navigate(['/update-catfact', {itemId: this.itemId}]);
     }
+
+    ngOnInit() {
+        this.localStorage.readStorage().then((value) => {
+            this.loadSingleCatfact();
+        });
+    }
 }
+

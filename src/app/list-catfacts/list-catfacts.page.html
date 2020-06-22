@@ -9,7 +9,7 @@
 
 <ion-content>
     <ion-list>
-        <ion-item *ngFor="let item of myCatfactList; let i = index;">
+        <ion-item *ngFor="let item of localStorage.myCatfactList; let i = index;">
             <ion-avatar slot="start">
                 <img [src]=item.img>
             </ion-avatar>

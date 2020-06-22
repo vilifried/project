@@ -10,20 +10,19 @@ import {AlertController, ToastController} from '@ionic/angular';
 })
 export class ListCatfactsPage implements OnInit {
 
-    myCatfactList: Array<{ title: string, img: any, catfact: string }>;
+    localStorage: LocalStorageService;
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
                 private localStorageService: LocalStorageService,
                 private alertController: AlertController,
                 private toastController: ToastController) {
+        this.localStorage = localStorageService;
     }
 
     clearList() {
-        this.localStorageService.clearList();
-        this.localStorageService.readStorage().then((value) => {
-            this.myCatfactList = value;
-        });
+        this.localStorage.clearList();
+        this.localStorage.readStorage();
         this.presentToast();
     }
 
@@ -67,9 +66,7 @@ export class ListCatfactsPage implements OnInit {
     }
 
     ngOnInit() {
-        this.localStorageService.readStorage().then((value) => {
-            this.myCatfactList = value;
-        });
+        this.localStorage.readStorage();
     }
 }
 

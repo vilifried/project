@@ -24,12 +24,11 @@ export class CreateCatfactPage implements OnInit {
 
     showLoader: boolean;
 
-    myCatfactList: Array<{ title: string, img: any, catfact: string }>;
+    localStorage: LocalStorageService;
 
     catfactTitle: string;
 
     titleInputElement = false;
-    buttonContainerElement = true;
     cardElement = true;
 
     constructor(private catfactService: CatfactService,
@@ -37,6 +36,7 @@ export class CreateCatfactPage implements OnInit {
                 private localStorageService: LocalStorageService,
                 private toastController: ToastController) {
         this.arrayIndexNumber = 0;
+        this.localStorage = localStorageService;
     }
 
     getImageFromService() {
@@ -92,7 +92,7 @@ export class CreateCatfactPage implements OnInit {
 
     addItem() {
         this.localStorageService.addItem(this.catfactTitle, this.catImage, this.catfactText);
-        this.hideTitleInputShowButtons();
+        this.hideTitleInput();
         this.presentToast();
         this.catfactTitle = '';
     }
@@ -105,32 +105,27 @@ export class CreateCatfactPage implements OnInit {
         toast.present();
     }
 
-    showTitleInputHideButtons() {
+    showTitleInput() {
         this.titleInputElement = true;
-        this.buttonContainerElement = false;
     }
 
-    hideTitleInputShowButtons() {
+    hideTitleInput() {
         this.titleInputElement = false;
-        this.buttonContainerElement = true;
     }
 
     showProgressBarHideCard() {
         this.catImage = null;
         this.showLoader = true;
         this.cardElement = false;
-        this.buttonContainerElement = false;
     }
 
     hideProgressBarShowCard() {
         this.showLoader = false;
         this.cardElement = true;
-        this.buttonContainerElement = true;
     }
 
     ngOnInit() {
         this.localStorageService.readStorage().then((value) => {
-            this.myCatfactList = value;
             this.getImageFromService();
             this.getHttpResponseObjectFromService();
         });
