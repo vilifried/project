@@ -30,6 +30,7 @@ export class CreateCatfactPage implements OnInit {
 
     titleInputElement = false;
     cardElement = true;
+    footerButtons = true;
 
     constructor(private catfactService: CatfactService,
                 private imageService: ImageService,
@@ -100,17 +101,20 @@ export class CreateCatfactPage implements OnInit {
     async presentToast() {
         const toast = await this.toastController.create({
             message: 'Cat Fact Saved.',
-            duration: 2000
+            duration: 2000,
+            position: 'top'
         });
         toast.present();
     }
 
     showTitleInput() {
         this.titleInputElement = true;
+        this.footerButtons = false;
     }
 
     hideTitleInput() {
         this.titleInputElement = false;
+        this.footerButtons = true;
     }
 
     showProgressBarHideCard() {
