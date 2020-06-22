@@ -20,8 +20,12 @@
     </ion-card>
     <div class="container" *ngIf='buttonContainerElement'>
         <div class="center">
-            <ion-button color="primary" size="small" (click)="showTitleInputHideButtons()">Save</ion-button>
-            <ion-button color="primary" size="small" (click)="nextItem()">Next</ion-button>
+            <ion-button color="primary" size="small" fill="outline" (click)="showTitleInputHideButtons()">
+                Save
+            </ion-button>
+            <ion-button color="primary" size="small" fill="outline" (click)="nextItem()">
+                Next
+            </ion-button>
         </div>
     </div>
 
@@ -38,4 +42,18 @@
         </ion-item>
     </div>
 
+
+    <!-- fab placed to the bottom start -->
+    <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+        <ion-fab-button size="small" (click)="showTitleInputHideButtons()">
+            <ion-icon name="arrow-up-circle"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+
+    <!-- fab placed to the bottom end -->
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button size="small" (click)="nextItem()">
+            <ion-icon name="arrow-forward-circle"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
 </ion-content>
