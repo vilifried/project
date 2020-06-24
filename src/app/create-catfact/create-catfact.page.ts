@@ -40,7 +40,7 @@ export class CreateCatfactPage implements OnInit {
         this.localStorage = localStorageService;
     }
 
-    getImageFromService() {
+    getBlobFromService() {
         this.showProgressBarHideCard();
         this.isImageLoading = true;
         this.imageService.getImage(this.imgUrl).subscribe(data => {
@@ -87,7 +87,7 @@ export class CreateCatfactPage implements OnInit {
     }
 
     nextItem() {
-        this.getImageFromService();
+        this.getBlobFromService();
         this.getHttpResponseObjectFromService();
     }
 
@@ -130,7 +130,7 @@ export class CreateCatfactPage implements OnInit {
 
     ngOnInit() {
         this.localStorageService.readStorage().then((value) => {
-            this.getImageFromService();
+            this.getBlobFromService();
             this.getHttpResponseObjectFromService();
         });
     }

@@ -8,20 +8,32 @@
 </ion-header>
 
 <ion-content>
+    <ion-progress-bar [type]="'indeterminate'" *ngIf="showLoader"></ion-progress-bar>
     <ion-card>
-        <img id="cardImg" [src]="catImage"/>
+        <img id="cardImg" (click)="getNextImage()" [src]="catImage"/>
         <ion-card-header>
-            <ion-card-title color="primary">{{catfactTitle}}</ion-card-title>
+            <ion-card-title color="primary">
+                <ion-input id="titleInput" [(ngModel)]="catfactTitle"></ion-input>
+            </ion-card-title>
         </ion-card-header>
         <ion-card-content>
-            {{catfactText}}
+            <ion-textarea id="textInput" autoGrow="true" [(ngModel)]="catfactText">
+            </ion-textarea>
+            <div class="center">
+            </div>
         </ion-card-content>
     </ion-card>
 </ion-content>
+
 <ion-footer class="ion-no-border">
     <ion-toolbar>
         <div class="center">
-            <ion-button color="primary" size="small" fill="outline" (click)="navigateToUpdatecatfact()">Edit
+            <ion-button size="small" fill="clear" (click)="presentPopover()">
+                <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+            <ion-button color="primary" size="small" fill="outline" (click)="navigateToUpdatecatfact()">Save
+            </ion-button>
+            <ion-button color="primary" size="small" fill="outline" (click)="navigateToUpdatecatfact()">Next
             </ion-button>
         </div>
     </ion-toolbar>
