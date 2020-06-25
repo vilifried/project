@@ -101,8 +101,9 @@ export class CreateCatfactPage implements OnInit {
     async presentToast() {
         const toast = await this.toastController.create({
             message: 'Cat Fact Saved.',
-            duration: 1000,
-            position: 'top'
+            duration: 500,
+            position: 'top',
+            color: 'primary',
         });
         toast.present();
     }

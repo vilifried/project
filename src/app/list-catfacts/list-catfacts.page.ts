@@ -52,17 +52,52 @@ export class ListCatfactsPage implements OnInit {
     async presentToast() {
         const toast = await this.toastController.create({
             message: 'List successfully deleted.',
-            duration: 2000
+            duration: 500,
+            color: 'primary',
         });
         toast.present();
     }
 
-    navigateToUpdateCatfact(parameter: number) {
-        this.router.navigate(['/update-catfact', {itemId: parameter}]);
-    }
-
     navigateToViewCatfact(parameter: number) {
         this.router.navigate(['/view-single-catfact', {itemId: parameter}]);
+    }
+
+    deleteArrayElement(itemId) {
+        this.localStorage.deleteArrayElement(itemId);
+        this.presentDeleteToast();
+    }
+
+    async presentDeleteElementAlert(itemId) {
+        const alert = await this.alertController.create({
+            cssClass: 'my-custom-class',
+            header: 'Delete Cat Fact?',
+            buttons: [
+                {
+                    text: 'Cancel',
+                    role: 'cancel',
+                    cssClass: 'secondary',
+                    handler: (blah) => {
+                        console.log('Confirm Cancel: blah');
+                    }
+                }, {
+                    text: 'Delete',
+                    handler: () => {
+                        this.deleteArrayElement(itemId);
+                    }
+                }
+            ]
+        });
+        await alert.present();
+    }
+
+    async presentDeleteToast() {
+        const toast = await this.toastController.create({
+            message: 'Cat Fact deleted.',
+            duration: 500,
+            position: 'top',
+            color: 'primary'
+        });
+        toast.present();
     }
 
     ngOnInit() {

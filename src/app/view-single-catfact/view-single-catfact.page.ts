@@ -28,7 +28,6 @@ export class ViewSingleCatfactPage implements OnInit {
     catfactTitle: string;
     catfactText: string;
     showLoader: boolean;
-    showSpinner: boolean;
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -116,8 +115,6 @@ export class ViewSingleCatfactPage implements OnInit {
         this.showLoader = false;
     }
 
-
-
     clearText() {
         this.catfactText = '';
     }
@@ -154,13 +151,14 @@ export class ViewSingleCatfactPage implements OnInit {
         const toast = await this.toastController.create({
             message: 'Cat Fact deleted.',
             duration: 1000,
-            position: 'top'
+            position: 'top',
+            color: 'primary',
         });
         toast.present();
     }
 
     saveCatFact() {
-        this.localStorage.editItem(this.itemId, this.catImage, this.catfactText);
+        this.localStorage.editItem(this.itemId, this.catfactTitle, this.catImage, this.catfactText);
         this.presentSaveToast();
     }
 
@@ -168,7 +166,8 @@ export class ViewSingleCatfactPage implements OnInit {
         const toast = await this.toastController.create({
             message: 'Cat Fact saved.',
             duration: 1000,
-            position: 'top'
+            position: 'top',
+            color: 'primary',
         });
         toast.present();
     }
@@ -178,6 +177,5 @@ export class ViewSingleCatfactPage implements OnInit {
             this.loadSingleCatfact();
         });
     }
-
 }
 

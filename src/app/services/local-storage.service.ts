@@ -27,7 +27,8 @@ export class LocalStorageService {
         this.storage.set('localCatfactList', this._myCatfactList);
     }
 
-    editItem(itemId: number, imgToEdit: any, catfactToEdit: string) {
+    editItem(itemId: number, titleToEdit: string, imgToEdit: any, catfactToEdit: string) {
+        this._myCatfactList[itemId].title = titleToEdit;
         this._myCatfactList[itemId].img = imgToEdit;
         this._myCatfactList[itemId].catfact = catfactToEdit;
         this.storage.set('localCatfactList', this._myCatfactList);
