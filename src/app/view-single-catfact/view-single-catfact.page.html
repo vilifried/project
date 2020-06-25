@@ -17,7 +17,9 @@
             </ion-card-title>
         </ion-card-header>
         <ion-card-content>
-            <ion-textarea id="textInput" autoGrow="true" wrap="soft" spellcheck="false" [(ngModel)]="catfactText">
+            <ion-spinner name="dots" *ngIf="isCatFactLoading"></ion-spinner>
+            <ion-textarea id="textInput" autoGrow="true" wrap="soft" spellcheck="false"
+                          [(ngModel)]="catfactText" *ngIf="!isCatFactLoading">
             </ion-textarea>
             <div class="center">
             </div>
@@ -30,12 +32,12 @@
         <ion-grid>
             <ion-row>
                 <ion-col>
-                    <ion-button fill="clear" size="small" (click)="presentActionSheet()">
+                    <ion-button fill="clear" size="small" (click)="presentDeleteElementAlert()">
                         <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
                     </ion-button>
                 </ion-col>
                 <ion-col>
-                    <ion-button fill="clear" size="small" (click)="presentActionSheet()">
+                    <ion-button fill="clear" size="small" (click)="saveCatFact()">
                         <ion-icon name="save-outline" slot="icon-only"></ion-icon>
                     </ion-button>
                 </ion-col>
@@ -45,7 +47,7 @@
                     </ion-button>
                 </ion-col>
                 <ion-col>
-                    <ion-button fill="clear" size="small" (click)="presentActionSheet()">
+                    <ion-button fill="clear" size="small" (click)="getNextCatFactText()">
                         <ion-icon name="refresh-outline" slot="icon-only"></ion-icon>
                     </ion-button>
                 </ion-col>

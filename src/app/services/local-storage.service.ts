@@ -38,8 +38,15 @@ export class LocalStorageService {
         this.readStorage();
     }
 
-
     get myCatfactList(): Array<{ title: string; img: any; catfact: string }> {
         return this._myCatfactList;
+    }
+
+    deleteArrayElement(itemId: number) {
+        const index: number = itemId;
+        if (index !== -1) {
+            this._myCatfactList.splice(index, 1);
+        }
+        this.storage.set('localCatfactList', this._myCatfactList);
     }
 }
