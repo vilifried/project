@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {LocalStorageService} from '../services/local-storage.service';
-import {AlertController, PopoverController, ToastController} from '@ionic/angular';
+import {AlertController, ToastController} from '@ionic/angular';
 import {CatfactService} from '../services/catfact.service';
 import {ImageService} from '../services/image.service';
 
@@ -44,11 +44,7 @@ export class ViewSingleCatfactPage implements OnInit {
         this.catfactText = this.localStorage.myCatfactList[this.itemId].catfact;
         this.catfactTitle = this.localStorage.myCatfactList[this.itemId].title;
     }
-
-    navigateToUpdatecatfact() {
-        this.router.navigate(['/update-catfact', {itemId: this.itemId}]);
-    }
-
+    
     getBlobFromService() {
         this.showProgressBarHideImg();
         this.isImageLoading = true;
@@ -88,14 +84,14 @@ export class ViewSingleCatfactPage implements OnInit {
         this.showLoader = false;
     }
 
+    clearText() {
+        this.catfactText = '';
+    }
+
     ngOnInit() {
         this.localStorage.readStorage().then((value) => {
             this.loadSingleCatfact();
         });
-    }
-
-    clearText() {
-        this.catfactText = '';
     }
 
 }
