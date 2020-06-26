@@ -23,7 +23,7 @@ export class ListCatfactsPage implements OnInit {
     clearList() {
         this.localStorage.clearList();
         this.localStorage.readStorage();
-        this.presentToast();
+        this.presentClearListToast();
     }
 
     async presentAlert() {
@@ -49,11 +49,12 @@ export class ListCatfactsPage implements OnInit {
         await alert.present();
     }
 
-    async presentToast() {
+    async presentClearListToast() {
         const toast = await this.toastController.create({
             message: 'List successfully deleted.',
             duration: 500,
             color: 'primary',
+            position: 'top'
         });
         toast.present();
     }

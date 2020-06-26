@@ -18,8 +18,8 @@ export class LocalStorageService {
                 this._myCatfactList = [];
                 this.storage.set('localCatfactList', this._myCatfactList);
             }
+            return this._myCatfactList;
         });
-        return this._myCatfactList;
     }
 
     addItem(titleToAdd: string, imgToAdd: any, catfactToAdd: string) {
