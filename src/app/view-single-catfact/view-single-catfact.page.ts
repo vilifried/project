@@ -6,7 +6,6 @@ import {CatfactService} from '../services/catfact.service';
 import {ImageService} from '../services/image.service';
 import {HttpResponse} from '@angular/common/http';
 
-
 @Component({
     selector: 'app-view-single-catfact',
     templateUrl: './view-single-catfact.page.html',
@@ -20,8 +19,7 @@ export class ViewSingleCatfactPage implements OnInit {
     catImage: any;
     isImageLoading: boolean;
 
-    catFactsUrl = 'https://cat-fact.herokuapp.com/facts';
-    arrayIndexNumber: number;
+    catFactsUrl = 'https://catfact.ninja/fact?max_length=900';
     isCatFactLoading: boolean;
 
     itemId: number;
@@ -94,12 +92,7 @@ export class ViewSingleCatfactPage implements OnInit {
     }
 
     createStringFromHttpResponseObject(response: HttpResponse<any>) {
-        if (response.body.all.length > this.arrayIndexNumber) {
-            this.arrayIndexNumber++;
-        } else {
-            this.arrayIndexNumber = 0;
-        }
-        this.catfactText = response.body.all[this.arrayIndexNumber].text;
+        this.catfactText = response.body.fact;
     }
 
     getNextCatFactText() {

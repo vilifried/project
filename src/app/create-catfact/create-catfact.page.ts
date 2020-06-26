@@ -16,11 +16,10 @@ export class CreateCatfactPage implements OnInit {
     catImage: any;
     isImageLoading: boolean;
 
-    catFactsUrl = 'https://cat-fact.herokuapp.com/facts';
+    catFactUrl = 'https://catfact.ninja/fact?max_length=900';
     isCatFactLoading: boolean;
-    arrayIndexNumber: number;
     catfactText: string;
-    httpStatusCode: number;
+    catfactCounter: number;
 
     showLoader: boolean;
 
@@ -36,8 +35,8 @@ export class CreateCatfactPage implements OnInit {
                 private imageService: ImageService,
                 private localStorageService: LocalStorageService,
                 private toastController: ToastController) {
-        this.arrayIndexNumber = 0;
         this.localStorage = localStorageService;
+        this.catfactCounter = 0;
     }
 
     getBlobFromService() {
@@ -67,7 +66,7 @@ export class CreateCatfactPage implements OnInit {
 
     getHttpResponseObjectFromService() {
         this.isCatFactLoading = true;
-        this.catfactService.getCatFact(this.catFactsUrl).subscribe(data => {
+        this.catfactService.getCatFact(this.catFactUrl).subscribe(data => {
             this.createStringFromHttpResponseObject(data);
             this.isCatFactLoading = false;
         }, error => {
@@ -77,13 +76,8 @@ export class CreateCatfactPage implements OnInit {
     }
 
     createStringFromHttpResponseObject(response: HttpResponse<any>) {
-        if (response.body.all.length > this.arrayIndexNumber) {
-            this.arrayIndexNumber++;
-        } else {
-            this.arrayIndexNumber = 0;
-        }
-        this.catfactText = response.body.all[this.arrayIndexNumber].text;
-        this.httpStatusCode = response.status;
+        this.catfactText = response.body.fact;
+        this.catfactCounter++;
     }
 
     nextItem() {
