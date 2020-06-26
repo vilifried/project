@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
-    <ion-list>
+    <ion-list *ngIf="listMode">
         <ion-item *ngFor="let item of localStorage.myCatfactList; let i = index;">
             <ion-avatar slot="start">
                 <img [src]=item.img>
@@ -27,11 +27,39 @@
             </ion-button>
         </ion-item>
     </ion-list>
+
+    <ion-list *ngIf="!listMode">
+        <ion-item *ngFor="let item of localStorage.myCatfactList; let i = index;">
+            <ion-card (click)="navigateToViewCatfact(i)">
+                <img id="cardImg" [src]=item.img>
+                <ion-card-header>
+                    <ion-card-title color="primary">
+                        {{item.title}}
+                    </ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                    {{item.catfact}}
+                </ion-card-content>
+            </ion-card>
+        </ion-item>
+    </ion-list>
 </ion-content>
 <ion-footer class="ion-no-border" mode="ios" translucent="true">
     <ion-toolbar>
-        <ion-button id="delete-button" expand="block" fill="outline" color="primary"
-                    (click)="presentAlert()">Delete All Cat Facts
-        </ion-button>
+        <ion-grid>
+            <ion-row>
+                <ion-col>
+                    <ion-button color="primary" fill="outline" expand="block" (click)="switchListMode()">
+                        Switch List Mode
+                    </ion-button>
+                </ion-col>
+                <ion-col>
+                    <ion-button color="primary" fill="outline" expand="block"
+                                (click)="presentAlert()">
+                        Delete All Cat Facts
+                    </ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
     </ion-toolbar>
 </ion-footer>

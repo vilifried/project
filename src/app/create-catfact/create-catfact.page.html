@@ -21,11 +21,17 @@
 </ion-content>
 <ion-footer class="ion-no-border" mode="ios" translucent="true">
     <ion-toolbar *ngIf='footerButtons'>
-        <div class="center">
-            <ion-button color="primary" size="small" fill="outline" (click)="showTitleInput()">Save
-            </ion-button>
-            <ion-button color="primary" size="small" fill="outline" (click)="nextItem()">Next</ion-button>
-        </div>
+        <ion-grid>
+            <ion-row>
+                <ion-col>
+                    <ion-button color="primary" fill="outline" expand="block" (click)="showTitleInput()">Save
+                    </ion-button>
+                </ion-col>
+                <ion-col>
+                    <ion-button color="primary" fill="outline" expand="block" (click)="nextItem()">Next</ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
     </ion-toolbar>
 
     <ion-toolbar *ngIf='titleInputElement'>
