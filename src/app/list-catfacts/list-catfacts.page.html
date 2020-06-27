@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
-    <ion-list *ngIf="listMode">
+    <ion-list *ngIf="isAvatarList">
         <ion-item *ngFor="let item of localStorage.myCatfactList; let i = index;">
             <ion-avatar slot="start">
                 <img [src]=item.img>
@@ -28,7 +28,7 @@
         </ion-item>
     </ion-list>
 
-    <ion-list *ngIf="!listMode">
+    <ion-list *ngIf="!isAvatarList">
         <ion-item *ngFor="let item of localStorage.myCatfactList; let i = index;">
             <ion-card (click)="navigateToViewCatfact(i)">
                 <img id="cardImg" [src]=item.img>
@@ -44,12 +44,13 @@
         </ion-item>
     </ion-list>
 </ion-content>
+
 <ion-footer class="ion-no-border" mode="ios" translucent="true">
     <ion-toolbar>
         <ion-grid>
             <ion-row>
                 <ion-col>
-                    <ion-button color="primary" fill="outline" expand="block" (click)="switchListMode()">
+                    <ion-button color="primary" fill="outline" expand="block" (click)="switchListView()">
                         Switch List View
                     </ion-button>
                 </ion-col>

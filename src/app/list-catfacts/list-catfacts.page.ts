@@ -11,7 +11,7 @@ import {AlertController, ToastController} from '@ionic/angular';
 export class ListCatfactsPage implements OnInit {
 
     localStorage: LocalStorageService;
-    listMode = true;
+    isAvatarList = true;
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -102,8 +102,8 @@ export class ListCatfactsPage implements OnInit {
         toast.present();
     }
 
-    switchListMode() {
-        this.listMode = !this.listMode;
+    switchListView() {
+        this.isAvatarList = !this.isAvatarList;
     }
 
     ngOnInit() {
