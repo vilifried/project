@@ -9,7 +9,7 @@
 
 <ion-content>
     <ion-list *ngIf="isAvatarList">
-        <ion-item *ngFor="let item of localStorage.myCatfactList; let i = index;">
+        <ion-item *ngFor="let item of localStorage.itemList; let i = index;">
             <ion-avatar slot="start">
                 <img [src]=item.img>
             </ion-avatar>
@@ -29,7 +29,7 @@
     </ion-list>
 
     <ion-list *ngIf="!isAvatarList">
-        <ion-item *ngFor="let item of localStorage.myCatfactList; let i = index;">
+        <ion-item *ngFor="let item of localStorage.itemList; let i = index;">
             <ion-card (click)="navigateToViewCatfact(i)">
                 <img id="cardImg" [src]=item.img>
                 <ion-card-header>

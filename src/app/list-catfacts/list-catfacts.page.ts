@@ -65,7 +65,7 @@ export class ListCatfactsPage implements OnInit {
     }
 
     deleteArrayElement(itemId) {
-        this.localStorage.deleteArrayElement(itemId);
+        this.localStorage.deleteItem(itemId);
         this.presentDeleteToast();
     }
 

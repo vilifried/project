@@ -46,9 +46,9 @@ export class ViewSingleCatfactPage implements OnInit {
     }
 
     loadSingleCatfact() {
-        this.catImage = this.localStorage.myCatfactList[this.itemId].img;
-        this.catfactText = this.localStorage.myCatfactList[this.itemId].catfact;
-        this.catfactTitle = this.localStorage.myCatfactList[this.itemId].title;
+        this.catImage = this.localStorage.itemList[this.itemId].img;
+        this.catfactText = this.localStorage.itemList[this.itemId].catfact;
+        this.catfactTitle = this.localStorage.itemList[this.itemId].title;
     }
 
     getBlobFromService() {
@@ -113,7 +113,7 @@ export class ViewSingleCatfactPage implements OnInit {
     }
 
     deleteArrayElement() {
-        this.localStorage.deleteArrayElement(this.itemId);
+        this.localStorage.deleteItem(this.itemId);
         this.presentDeleteToast().then(value => this.navigateTolistCatfacts());
     }
 

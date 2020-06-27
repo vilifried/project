@@ -6,48 +6,48 @@ import {Storage} from '@ionic/storage';
 })
 export class LocalStorageService {
 
-    private _myCatfactList: Array<{ title: string, img: any, catfact: string }>;
+    private _itemList: Array<{ title: string, img: any, catfact: string }>;
 
     constructor(private storage: Storage) {
     }
 
     async readStorage() {
         await this.storage.get('localCatfactList').then((val) => {
-            this._myCatfactList = val;
-            if (this._myCatfactList === null) {
-                this._myCatfactList = [];
-                this.storage.set('localCatfactList', this._myCatfactList);
+            this._itemList = val;
+            if (this._itemList === null) {
+                this._itemList = [];
+                this.storage.set('localCatfactList', this._itemList);
             }
-            return this._myCatfactList;
+            return this._itemList;
         });
     }
 
     addItem(titleToAdd: string, imgToAdd: any, catfactToAdd: string) {
-        this._myCatfactList.push({title: titleToAdd, img: imgToAdd, catfact: catfactToAdd});
-        this.storage.set('localCatfactList', this._myCatfactList);
+        this._itemList.push({title: titleToAdd, img: imgToAdd, catfact: catfactToAdd});
+        this.storage.set('localCatfactList', this._itemList);
     }
 
     editItem(itemId: number, titleToEdit: string, imgToEdit: any, catfactToEdit: string) {
-        this._myCatfactList[itemId].title = titleToEdit;
-        this._myCatfactList[itemId].img = imgToEdit;
-        this._myCatfactList[itemId].catfact = catfactToEdit;
-        this.storage.set('localCatfactList', this._myCatfactList);
+        this._itemList[itemId].title = titleToEdit;
+        this._itemList[itemId].img = imgToEdit;
+        this._itemList[itemId].catfact = catfactToEdit;
+        this.storage.set('localCatfactList', this._itemList);
+    }
+
+    get itemList(): Array<{ title: string; img: any; catfact: string }> {
+        return this._itemList;
+    }
+
+    deleteItem(itemId: number) {
+        const index: number = itemId;
+        if (index !== -1) {
+            this._itemList.splice(index, 1);
+        }
+        this.storage.set('localCatfactList', this._itemList);
     }
 
     clearList() {
         this.storage.clear().then(r => console.log(r + 'cleared'));
         this.readStorage();
-    }
-
-    get myCatfactList(): Array<{ title: string; img: any; catfact: string }> {
-        return this._myCatfactList;
-    }
-
-    deleteArrayElement(itemId: number) {
-        const index: number = itemId;
-        if (index !== -1) {
-            this._myCatfactList.splice(index, 1);
-        }
-        this.storage.set('localCatfactList', this._myCatfactList);
     }
 }
