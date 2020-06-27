@@ -34,16 +34,16 @@ export class LocalStorageService {
         this.storage.set('localCatfactList', this._itemList);
     }
 
-    get itemList(): Array<{ title: string; img: any; catfact: string }> {
-        return this._itemList;
-    }
-
     deleteItem(itemId: number) {
         const index: number = itemId;
         if (index !== -1) {
             this._itemList.splice(index, 1);
         }
         this.storage.set('localCatfactList', this._itemList);
+    }
+
+    get itemList(): Array<{ title: string; img: any; catfact: string }> {
+        return this._itemList;
     }
 
     clearList() {
