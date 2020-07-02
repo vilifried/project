@@ -1,15 +1,23 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {HttpResponse} from '@angular/common/http';
 import {CatfactService} from '../services/catfact.service';
 import {ImageService} from '../services/image.service';
 import {LocalStorageService} from '../services/local-storage.service';
 import {ToastController} from '@ionic/angular';
 
+enum COLORS {
+    GREY = '#E0E0E0',
+    GREEN = '#66fd01',
+    YELLOW = '#ffe802',
+    RED = '#f80606'
+}
+
 @Component({
     selector: 'app-create-catfact',
     templateUrl: './create-catfact.page.html',
     styleUrls: ['./create-catfact.page.scss'],
 })
+
 export class CreateCatfactPage implements OnInit {
 
     imgUrl = 'https://api.thecatapi.com/v1/images/search?format=src';
@@ -23,20 +31,19 @@ export class CreateCatfactPage implements OnInit {
 
     showLoader: boolean;
 
-    localStorage: LocalStorageService;
-
     catfactTitle: string;
 
     titleInputElement = false;
     cardElement = true;
     footerButtons = true;
 
+    @Input() rating: number;
+    @Output() ratingChange: EventEmitter<number> = new EventEmitter();
+
     constructor(private catfactService: CatfactService,
                 private imageService: ImageService,
                 private localStorageService: LocalStorageService,
                 private toastController: ToastController) {
-        this.localStorage = localStorageService;
-        this.catfactCounter = 0;
     }
 
     getBlobFromService() {
@@ -80,13 +87,13 @@ export class CreateCatfactPage implements OnInit {
         this.catfactCounter++;
     }
 
-    nextItem() {
+    getNextItemFromService() {
         this.getBlobFromService();
         this.getHttpResponseObjectFromService();
     }
 
-    addItem() {
-        this.localStorageService.addItem(this.catfactTitle, this.catImage, this.catfactText);
+    saveItem() {
+        this.localStorageService.addItem(this.catfactTitle, this.catImage, this.catfactText, this.rating);
         this.hideTitleInput();
         this.presentToast();
         this.catfactTitle = '';
@@ -123,7 +130,36 @@ export class CreateCatfactPage implements OnInit {
         this.cardElement = true;
     }
 
+    rate(index: number) {
+        console.log(index);
+        this.rating = index;
+        this.ratingChange.emit(this.rating);
+    }
+
+    isAboveRating(index: number): boolean {
+        return index > this.rating;
+    }
+
+    getColor(index: number) {
+        if (this.isAboveRating(index)) {
+            return COLORS.GREY;
+        }
+        switch (this.rating) {
+            case 1:
+            case 2:
+                return COLORS.RED;
+            case 3:
+                return COLORS.YELLOW;
+            case 4:
+            case 5:
+                return COLORS.GREEN;
+            default:
+                return COLORS.GREY;
+        }
+    }
+
     ngOnInit() {
+        this.catfactCounter = 0;
         this.localStorageService.readStorage().then((value) => {
             this.getBlobFromService();
             this.getHttpResponseObjectFromService();

@@ -6,7 +6,7 @@ import {Storage} from '@ionic/storage';
 })
 export class LocalStorageService {
 
-    private _itemList: Array<{ title: string, img: any, catfact: string }>;
+    private _itemList: Array<{ title: string, img: any, catfact: string, rating: number }>;
 
     constructor(private storage: Storage) {
     }
@@ -22,8 +22,8 @@ export class LocalStorageService {
         });
     }
 
-    addItem(titleToAdd: string, imgToAdd: any, catfactToAdd: string) {
-        this._itemList.push({title: titleToAdd, img: imgToAdd, catfact: catfactToAdd});
+    addItem(titleToAdd: string, imgToAdd: any, catfactToAdd: string, ratingToAdd) {
+        this._itemList.push({title: titleToAdd, img: imgToAdd, catfact: catfactToAdd, rating: ratingToAdd});
         this.storage.set('localCatfactList', this._itemList);
     }
 
@@ -42,7 +42,7 @@ export class LocalStorageService {
         this.storage.set('localCatfactList', this._itemList);
     }
 
-    get itemList(): Array<{ title: string; img: any; catfact: string }> {
+    get itemList(): Array<{ title: string; img: any; catfact: string; rating: number }> {
         return this._itemList;
     }
 

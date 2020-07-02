@@ -3,6 +3,13 @@ import {LocalStorageService} from '../services/local-storage.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AlertController, ToastController} from '@ionic/angular';
 
+enum COLORS {
+    GREY = '#E0E0E0',
+    GREEN = '#66fd01',
+    YELLOW = '#ffe802',
+    RED = '#f80606'
+}
+
 @Component({
     selector: 'app-list-catfacts',
     templateUrl: './list-catfacts.page.html',
@@ -12,6 +19,7 @@ export class ListCatfactsPage implements OnInit {
 
     localStorage: LocalStorageService;
     isAvatarList = true;
+    private rating: boolean;
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -104,6 +112,22 @@ export class ListCatfactsPage implements OnInit {
 
     switchListView() {
         this.isAvatarList = !this.isAvatarList;
+    }
+
+
+    getColor(rating: number) {
+        switch (rating) {
+            case 1:
+            case 2:
+                return COLORS.RED;
+            case 3:
+                return COLORS.YELLOW;
+            case 4:
+            case 5:
+                return COLORS.GREEN;
+            default:
+                return COLORS.GREY;
+        }
     }
 
     ngOnInit() {
