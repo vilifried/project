@@ -23,17 +23,15 @@
                 <ion-icon name="close-outline" slot="icon-only"></ion-icon>
             </ion-button>
             <ion-button size="small" fill="outline" color="primary"
-                        (click)="navigateToViewCatfact(i)">
+                        (click)="navigateToUpdateCatfact(i)">
                 <ion-icon name="chevron-forward-outline" slot="icon-only"></ion-icon>
             </ion-button>
         </ion-item>
-
-
     </ion-list>
 
     <ion-list *ngIf="!isAvatarList">
         <ion-item *ngFor="let item of localStorage.itemList; let i = index;">
-            <ion-card (click)="navigateToViewCatfact(i)">
+            <ion-card (click)="navigateToUpdateCatfact(i)">
                 <img id="cardImg" [src]=item.img>
                 <ion-card-header>
                     <ion-card-title color="primary">
@@ -43,6 +41,10 @@
                 <ion-card-content id="card-content">
                     {{item.catfact}}
                 </ion-card-content>
+                <ion-item>
+                    <ion-icon name="star-outline" *ngFor="let i of starRatingArray(item.rating).fill(1)"
+                              [ngStyle]="{'color': getColor(item.rating)}"></ion-icon>
+                </ion-item>
             </ion-card>
         </ion-item>
     </ion-list>

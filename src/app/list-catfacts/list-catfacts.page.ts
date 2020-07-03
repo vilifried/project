@@ -19,7 +19,7 @@ export class ListCatfactsPage implements OnInit {
 
     localStorage: LocalStorageService;
     isAvatarList = true;
-    private rating: boolean;
+    starRatingArray = Array;
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -68,8 +68,8 @@ export class ListCatfactsPage implements OnInit {
         toast.present();
     }
 
-    navigateToViewCatfact(parameter: number) {
-        this.router.navigate(['/view-single-catfact', {itemId: parameter}]);
+    navigateToUpdateCatfact(parameter: number) {
+        this.router.navigate(['/update-catfact', {itemId: parameter}]);
     }
 
     deleteArrayElement(itemId) {
