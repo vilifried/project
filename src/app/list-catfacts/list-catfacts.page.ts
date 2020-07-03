@@ -17,21 +17,20 @@ enum COLORS {
 })
 export class ListCatfactsPage implements OnInit {
 
-    localStorage: LocalStorageService;
     isAvatarList = true;
     starRatingArray = Array;
+    clicked = false;
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
-                private localStorageService: LocalStorageService,
+                public localStorageService: LocalStorageService,
                 private alertController: AlertController,
                 private toastController: ToastController) {
-        this.localStorage = localStorageService;
     }
 
     clearList() {
-        this.localStorage.clearList();
-        this.localStorage.readStorage();
+        this.localStorageService.clearList();
+        this.localStorageService.readStorage();
         this.presentClearListToast();
     }
 
@@ -73,7 +72,7 @@ export class ListCatfactsPage implements OnInit {
     }
 
     deleteArrayElement(itemId) {
-        this.localStorage.deleteItem(itemId);
+        this.localStorageService.deleteItem(itemId);
         this.presentDeleteToast();
     }
 
@@ -114,7 +113,6 @@ export class ListCatfactsPage implements OnInit {
         this.isAvatarList = !this.isAvatarList;
     }
 
-
     getColor(rating: number) {
         switch (rating) {
             case 1:
@@ -130,8 +128,13 @@ export class ListCatfactsPage implements OnInit {
         }
     }
 
+    sortArray(index: number) {
+        this.localStorageService.itemList.sort((a, b) => (b.rating > a.rating) ? 1 : -1);
+        //   console.log(this.sortedArray[index].rating);
+    }
+
     ngOnInit() {
-        this.localStorage.readStorage();
+        this.localStorageService.readStorage();
     }
 }
 

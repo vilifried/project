@@ -93,6 +93,9 @@ export class CreateCatfactPage implements OnInit {
     }
 
     saveItem() {
+        if (this.rating === undefined) {
+            this.rating = 0;
+        }
         this.localStorageService.addItem(this.catfactTitle, this.catImage, this.catfactText, this.rating);
         this.hideTitleInput();
         this.presentToast();

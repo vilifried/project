@@ -9,7 +9,7 @@
 
 <ion-content>
     <ion-list *ngIf="isAvatarList">
-        <ion-item *ngFor="let item of localStorage.itemList; let i = index;">
+        <ion-item slot="start" *ngFor="let item of localStorageService.itemList; let i = index;">
             <ion-avatar slot="start">
                 <img [src]=item.img>
             </ion-avatar>
@@ -17,7 +17,8 @@
                 <h2>{{item.title}}</h2>
                 <p id="list-text"> {{item.catfact}}</p>
             </ion-label>
-            <ion-icon name="star-outline" [ngStyle]="{'color': getColor(item.rating)}"></ion-icon>
+            <ion-icon name="tablet-portrait-outline" [ngStyle]="{'color': getColor(item.rating)}"
+                      (click)="sortArray(i); clicked = true;"></ion-icon>
             <ion-button size="small" fill="outline" color="primary"
                         (click)="presentDeleteElementAlert(i)">
                 <ion-icon name="close-outline" slot="icon-only"></ion-icon>
@@ -30,7 +31,7 @@
     </ion-list>
 
     <ion-list *ngIf="!isAvatarList">
-        <ion-item *ngFor="let item of localStorage.itemList; let i = index;">
+        <ion-item *ngFor="let item of localStorageService.itemList; let i = index;">
             <ion-card (click)="navigateToUpdateCatfact(i)">
                 <img id="cardImg" [src]=item.img>
                 <ion-card-header>

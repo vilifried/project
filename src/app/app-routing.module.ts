@@ -20,10 +20,6 @@ const routes: Routes = [
         loadChildren: () => import('./list-catfacts/list-catfacts.module').then(m => m.ListCatfactsPageModule)
     },
     {
-        path: 'view-single-catfact',
-        loadChildren: () => import('./view-single-catfact/view-single-catfact.module').then(m => m.ViewSingleCatfactPageModule)
-    },
-    {
         path: 'update-catfact',
         loadChildren: () => import('./update-catfact/update-catfact.module').then(m => m.UpdateCatfactPageModule)
     },
