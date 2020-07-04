@@ -100,6 +100,7 @@ export class CreateCatfactPage implements OnInit {
         this.hideTitleInput();
         this.presentToast();
         this.catfactTitle = '';
+        this.rating = 0;
     }
 
     async presentToast() {
