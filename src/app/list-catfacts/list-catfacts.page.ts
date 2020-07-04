@@ -19,7 +19,6 @@ export class ListCatfactsPage implements OnInit {
 
     isAvatarList = true;
     starRatingArray = Array;
-    sortArrayClicked = false;
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -129,15 +128,16 @@ export class ListCatfactsPage implements OnInit {
     }
 
     sortArray() {
-        if (!this.sortArrayClicked) {
-            this.localStorageService.itemList.sort((a, b) => (b.rating > a.rating) ? 1 : -1);
-        }
-        this.sortArrayClicked = true;
+        this.localStorageService.itemList.sort((a, b) => (b.rating > a.rating) ? 1 : -1);
+    }
+
+    ionViewDidEnter() {
+        //   this.sortArray();
     }
 
     ngOnInit() {
         this.localStorageService.readStorage().then((value) => {
-            this.sortArray();
+            //   this.sortArray();
         });
     }
 }

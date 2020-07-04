@@ -1,10 +1,17 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {LocalStorageService} from '../services/local-storage.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AlertController, ToastController} from '@ionic/angular';
 import {CatfactService} from '../services/catfact.service';
 import {ImageService} from '../services/image.service';
 import {HttpResponse} from '@angular/common/http';
+
+enum COLORS {
+    GREY = '#E0E0E0',
+    GREEN = '#66fd01',
+    YELLOW = '#ffe802',
+    RED = '#f80606'
+}
 
 @Component({
     selector: 'app-update-catfact',
@@ -25,7 +32,15 @@ export class UpdateCatfactPage implements OnInit {
     itemId: number;
     catfactTitle: string;
     catfactText: string;
+
     showLoader: boolean;
+
+    starRatingArray = Array;
+    savedRating: number;
+    @Input() updatedRating: number;
+    @Output() ratingChange: EventEmitter<number> = new EventEmitter();
+
+    isUpdatingRating = false;
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -46,9 +61,10 @@ export class UpdateCatfactPage implements OnInit {
     }
 
     loadSingleCatfact() {
-        this.catImage = this.localStorage.itemList[this.itemId].img;
-        this.catfactText = this.localStorage.itemList[this.itemId].catfact;
-        this.catfactTitle = this.localStorage.itemList[this.itemId].title;
+        this.catImage = this.localStorageService.itemList[this.itemId].img;
+        this.catfactText = this.localStorageService.itemList[this.itemId].catfact;
+        this.catfactTitle = this.localStorageService.itemList[this.itemId].title;
+        this.savedRating = this.localStorageService.itemList[this.itemId].rating;
     }
 
     getBlobFromService() {
@@ -147,7 +163,7 @@ export class UpdateCatfactPage implements OnInit {
     }
 
     saveCatFact() {
-        this.localStorage.editItem(this.itemId, this.catfactTitle, this.catImage, this.catfactText);
+        this.localStorage.updateItem(this.itemId, this.catfactTitle, this.catImage, this.catfactText, this.updatedRating);
         this.presentSaveToast();
     }
 
@@ -159,6 +175,56 @@ export class UpdateCatfactPage implements OnInit {
             color: 'primary',
         });
         toast.present();
+    }
+
+    rate(index: number) {
+        this.updatedRating = index;
+        this.ratingChange.emit(this.updatedRating);
+    }
+
+    isAboveRating(index: number): boolean {
+        return index > this.updatedRating;
+    }
+
+    getSavedColor(rating: number) {
+        if (this.isAboveRating(rating)) {
+            return COLORS.GREY;
+        }
+        switch (this.savedRating) {
+            case 1:
+            case 2:
+                return COLORS.RED;
+            case 3:
+                return COLORS.YELLOW;
+            case 4:
+            case 5:
+                return COLORS.GREEN;
+            default:
+                return COLORS.GREY;
+        }
+    }
+
+    getUpdatedColor(rating: number) {
+        if (this.isAboveRating(rating)) {
+            return COLORS.GREY;
+        }
+        switch (this.updatedRating) {
+            case 1:
+            case 2:
+                return COLORS.RED;
+            case 3:
+                return COLORS.YELLOW;
+            case 4:
+            case 5:
+                return COLORS.GREEN;
+            default:
+                return COLORS.GREY;
+        }
+    }
+
+    updateRating() {
+        this.isUpdatingRating = true;
+        this.updatedRating = 0;
     }
 
     ngOnInit() {

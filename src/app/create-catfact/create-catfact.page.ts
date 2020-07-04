@@ -135,7 +135,6 @@ export class CreateCatfactPage implements OnInit {
     }
 
     rate(index: number) {
-        console.log(index);
         this.rating = index;
         this.ratingChange.emit(this.rating);
     }

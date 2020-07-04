@@ -17,8 +17,7 @@
                 <h2>{{item.title}}</h2>
                 <p id="list-text"> {{item.catfact}}</p>
             </ion-label>
-            <ion-icon name="tablet-portrait-outline" [ngStyle]="{'color': getColor(item.rating)}"
-                      (click)="sortArray()"></ion-icon>
+            <ion-icon name="tablet-portrait-outline" [ngStyle]="{'color': getColor(item.rating)}"></ion-icon>
             <ion-button size="small" fill="outline" color="primary"
                         (click)="presentDeleteElementAlert(i)">
                 <ion-icon name="close-outline" slot="icon-only"></ion-icon>
