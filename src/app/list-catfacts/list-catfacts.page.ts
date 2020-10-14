@@ -127,13 +127,9 @@ export class ListCatfactsPage implements OnInit {
         }
     }
 
-    sortArray() {
-        this.localStorageService.itemList.sort((a, b) => (b.rating > a.rating) ? 1 : -1);
-    }
-
-    ionViewDidEnter() {
-        //   this.sortArray();
-    }
+    // sortArray() {
+    //     this.localStorageService.itemList.sort((a, b) => (b.rating > a.rating) ? 1 : -1);
+    // }
 
     ngOnInit() {
         this.localStorageService.readStorage().then((value) => {
