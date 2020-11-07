@@ -74,13 +74,13 @@ export class UpdateCatfactPage implements OnInit {
     getBlobFromService() {
         this.showProgressBarHideImg();
         this.isImageLoading = true;
-        this.imageService.getImage(this.imgUrl).subscribe(data => {
-            this.createImageFromBlob(data);
-            this.isImageLoading = false;
-        }, error => {
-            this.isImageLoading = false;
-            console.log(error);
-        });
+        // this.imageService.getImage(this.imgUrl).subscribe(data => {
+        //     this.createImageFromBlob(data);
+        //     this.isImageLoading = false;
+        // }, error => {
+        //     this.isImageLoading = false;
+        //     console.log(error);
+        // });
     }
 
     // JS FileReader - listens to load-Event, returns base64-encoded image

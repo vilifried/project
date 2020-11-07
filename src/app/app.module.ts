@@ -16,6 +16,7 @@ import {CatfactService} from './services/catfact.service';
 import {LocalStorageService} from './services/local-storage.service';
 import {EmailService} from './email.service';
 import {EmailComposer} from '@ionic-native/email-composer/ngx';
+import {HTTP} from '@ionic-native/http/ngx';
 
 @NgModule({
     declarations: [AppComponent],
@@ -29,6 +30,7 @@ import {EmailComposer} from '@ionic-native/email-composer/ngx';
         LocalStorageService,
         EmailComposer,
         EmailService,
+        HTTP,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
     ],
     bootstrap: [AppComponent]

@@ -4,6 +4,7 @@ import {CatfactService} from '../services/catfact.service';
 import {ImageService} from '../services/image.service';
 import {LocalStorageService} from '../services/local-storage.service';
 import {ToastController} from '@ionic/angular';
+import {HTTP} from '@ionic-native/http/ngx';
 
 enum COLORS {
     GREY = '#E0E0E0',
@@ -43,19 +44,60 @@ export class CreateCatfactPage implements OnInit {
     constructor(private catfactService: CatfactService,
                 private imageService: ImageService,
                 private localStorageService: LocalStorageService,
-                private toastController: ToastController) {
+                private toastController: ToastController,
+                private http: HTTP) {
+    }
+
+    getCatfact() {
+        this.isCatFactLoading = true;
+        console.log('START');
+        this.http.get(this.catFactUrl, {}, {})
+            .then(data => {
+                // this.createStringFromHttpResponseObject(data);
+                this.isCatFactLoading = false;
+                // this.catfactText = data.data.body.fact;
+                //   console.log('DATA: ' + data.data.body.fact);
+                this.catfactCounter++;
+                console.log(data.status);
+                console.log(data.data); // data received by server
+                console.log(data.headers);
+
+            })
+            .catch(error => {
+
+                console.log(error.status);
+                console.log(error.error); // error message as string
+                console.log(error.headers);
+
+            });
+    }
+
+    // getHttpResponseObjectFromService() {
+    //     this.isCatFactLoading = true;
+    //     this.catfactService.getCatFact(this.catFactUrl).subscribe(data => {
+    //         this.createStringFromHttpResponseObject(data);
+    //         this.isCatFactLoading = false;
+    //     }, error => {
+    //         this.isCatFactLoading = false;
+    //         console.log(error);
+    //     });
+    // }
+
+    createStringFromHttpResponseObject(response: HttpResponse<any>) {
+        this.catfactText = response.body.fact;
+        this.catfactCounter++;
     }
 
     getBlobFromService() {
         this.showProgressBarHideCard();
         this.isImageLoading = true;
-        this.imageService.getImage(this.imgUrl).subscribe(data => {
-            this.createImageFromBlob(data);
-            this.isImageLoading = false;
-        }, error => {
-            this.isImageLoading = false;
-            console.log(error);
-        });
+        // this.imageService.getImage(this.imgUrl).subscribe(data => {
+        //     this.createImageFromBlob(data);
+        //     this.isImageLoading = false;
+        // }, error => {
+        //     this.isImageLoading = false;
+        //     console.log(error);
+        // });
     }
 
     // JS FileReader - listens to load-Event, returns base64-encoded image
@@ -71,25 +113,9 @@ export class CreateCatfactPage implements OnInit {
         this.hideProgressBarShowCard();
     }
 
-    getHttpResponseObjectFromService() {
-        this.isCatFactLoading = true;
-        this.catfactService.getCatFact(this.catFactUrl).subscribe(data => {
-            this.createStringFromHttpResponseObject(data);
-            this.isCatFactLoading = false;
-        }, error => {
-            this.isCatFactLoading = false;
-            console.log(error);
-        });
-    }
-
-    createStringFromHttpResponseObject(response: HttpResponse<any>) {
-        this.catfactText = response.body.fact;
-        this.catfactCounter++;
-    }
-
     getNextItemFromService() {
         this.getBlobFromService();
-        this.getHttpResponseObjectFromService();
+        //   this.getHttpResponseObjectFromService();
     }
 
     saveItem() {
@@ -164,8 +190,9 @@ export class CreateCatfactPage implements OnInit {
     ngOnInit() {
         this.catfactCounter = 0;
         this.localStorageService.readStorage().then((value) => {
-            this.getBlobFromService();
-            this.getHttpResponseObjectFromService();
+            // this.getBlobFromService();
+            this.getCatfact();
+            // this.getHttpResponseObjectFromService();
         });
     }
 }
