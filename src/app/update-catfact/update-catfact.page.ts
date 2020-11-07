@@ -60,6 +60,10 @@ export class UpdateCatfactPage implements OnInit {
         this.router.navigate(['/list-catfacts', {}]);
     }
 
+    navigateToMailForm(parameter: number) {
+        this.router.navigate(['/mail-form', {itemId: parameter}]);
+    }
+
     loadSingleCatfact() {
         this.catImage = this.localStorageService.itemList[this.itemId].img;
         this.catfactText = this.localStorageService.itemList[this.itemId].catfact;

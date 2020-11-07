@@ -23,6 +23,11 @@ const routes: Routes = [
         path: 'update-catfact',
         loadChildren: () => import('./update-catfact/update-catfact.module').then(m => m.UpdateCatfactPageModule)
     },
+    {
+        path: 'mail-form',
+        loadChildren: () => import('./mail-form/mail-form.module').then(m => m.MailFormPageModule)
+    },
+
 
 ];
 
