@@ -1,10 +1,11 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {HttpResponse} from '@angular/common/http';
 import {CatfactService} from '../services/catfact.service';
 import {ImageService} from '../services/image.service';
 import {LocalStorageService} from '../services/local-storage.service';
 import {ToastController} from '@ionic/angular';
 import {HTTP} from '@ionic-native/http/ngx';
+import {DomSanitizer} from '@angular/platform-browser';
+
 
 enum COLORS {
     GREY = '#E0E0E0',
@@ -21,8 +22,10 @@ enum COLORS {
 
 export class CreateCatfactPage implements OnInit {
 
-    imgUrl = 'https://api.thecatapi.com/v1/images/search?format=src';
+    //imgUrl = 'https://api.thecatapi.com/v1/images/search?format=src';
+    imgUrl = 'https://aws.random.cat/meow';
     catImage: any;
+   // catImage: any;
     isImageLoading: boolean;
 
     catFactUrl = 'https://catfact.ninja/fact?max_length=900';
@@ -45,77 +48,102 @@ export class CreateCatfactPage implements OnInit {
                 private imageService: ImageService,
                 private localStorageService: LocalStorageService,
                 private toastController: ToastController,
-                private http: HTTP) {
+                private http: HTTP,
+                protected sanitizer: DomSanitizer) {
     }
 
-    getCatfact() {
+    getCatfactText() {
         this.isCatFactLoading = true;
-        console.log('START');
-        this.http.get(this.catFactUrl, {}, {})
-            .then(data => {
-                // this.createStringFromHttpResponseObject(data);
-                this.isCatFactLoading = false;
-                // this.catfactText = data.data.body.fact;
-                //   console.log('DATA: ' + data.data.body.fact);
-                this.catfactCounter++;
-                console.log(data.status);
-                console.log(data.data); // data received by server
-                console.log(data.headers);
-
+        this.http.sendRequest(this.catFactUrl,
+            {
+                method: 'get',
+                responseType: 'json'
+            }
+        )
+            .then(response => {
+                // prints 200
+                console.log(response.status);
+                this.catfactText = response.data.fact;
             })
-            .catch(error => {
-
-                console.log(error.status);
-                console.log(error.error); // error message as string
-                console.log(error.headers);
-
+            .catch(response => {
+                // prints 403
+                console.log(response.status);
+                // prints Permission denied
+                console.log(response.error);
             });
     }
 
-    // getHttpResponseObjectFromService() {
-    //     this.isCatFactLoading = true;
-    //     this.catfactService.getCatFact(this.catFactUrl).subscribe(data => {
-    //         this.createStringFromHttpResponseObject(data);
-    //         this.isCatFactLoading = false;
-    //     }, error => {
-    //         this.isCatFactLoading = false;
-    //         console.log(error);
-    //     });
-    // }
-
-    createStringFromHttpResponseObject(response: HttpResponse<any>) {
-        this.catfactText = response.body.fact;
-        this.catfactCounter++;
-    }
-
-    getBlobFromService() {
+    getImage() {
         this.showProgressBarHideCard();
         this.isImageLoading = true;
-        // this.imageService.getImage(this.imgUrl).subscribe(data => {
-        //     this.createImageFromBlob(data);
-        //     this.isImageLoading = false;
-        // }, error => {
-        //     this.isImageLoading = false;
-        //     console.log(error);
-        // });
+
+        this.http.sendRequest(this.imgUrl,
+            {
+                method: 'get',
+                responseType: 'arraybuffer'
+            }
+        )
+            .then(response => {
+                // prints 200
+                console.log(response.status);
+                console.log('DATA ' + response.data);
+                console.log('BODY ' + response.data);
+                this.arrayBufferToBase64(response.data);
+            })
+            .catch(response => {
+                // prints 403
+                console.log(response.status);
+                console.log('ERROR');
+                // prints Permission denied
+                console.log(response.error);
+                this.isImageLoading = false;
+            });
     }
 
-    // JS FileReader - listens to load-Event, returns base64-encoded image
-    createImageFromBlob(image: Blob) {
-        const reader = new FileReader();
-        reader.addEventListener('load', () => {
-            this.catImage = reader.result;
-        }, false);
-
-        if (image) {
-            reader.readAsDataURL(image);
-        }
+    arrayBufferToBase64(response) {
+        // Converts arraybuffer to typed array object
+        const TYPED_ARRAY = new Uint8Array(response);
+        console.log('TYPED ARRAY ' + TYPED_ARRAY);
+        // converts the typed array to string of characters
+        const STRING_CHAR = String.fromCharCode.apply(null, TYPED_ARRAY);
+        console.log('STRING CHAR ' + STRING_CHAR);
+        // converts string of characters to base64String
+        const base64String = btoa(STRING_CHAR);
+        console.log('BASE64 STRING ' + base64String);
+        // sanitize the url that is passed as a value to image src attribute
+        this.catImage = this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64, ' + base64String);
+        console.log('SANITIZER ' + this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64, ' + base64String).toString());
         this.hideProgressBarShowCard();
     }
 
+    // arrayBufferToBase64(buffer) {
+    //     let binary = '';
+    //     const bytes = new Uint8Array(buffer);
+    //     const len = bytes.byteLength;
+    //     for (let i = 0; i < len; i++) {
+    //         binary += String.fromCharCode(bytes[i]);
+    //     }
+    //     console.log(btoa(binary));
+    //     return btoa(binary);
+    // }
+
+    // JS FileReader - listens to load-Event, returns base64-encoded image
+    // createImageFromBlob(image: Blob) {
+    //     console.log('READER');
+    //     const reader = new FileReader();
+    //     reader.addEventListener('load', () => {
+    //         this.catImage = reader.result;
+    //     }, false);
+    //     if (image) {
+    //         reader.readAsDataURL(image);
+    //     }
+    //     this.hideProgressBarShowCard();
+    // }
+
+
     getNextItemFromService() {
-        this.getBlobFromService();
-        //   this.getHttpResponseObjectFromService();
+         this.getImage();
+         this.getCatfactText();
     }
 
     saveItem() {
@@ -191,7 +219,8 @@ export class CreateCatfactPage implements OnInit {
         this.catfactCounter = 0;
         this.localStorageService.readStorage().then((value) => {
             // this.getBlobFromService();
-            this.getCatfact();
+            this.getImage();
+            this.getCatfactText();
             // this.getHttpResponseObjectFromService();
         });
     }

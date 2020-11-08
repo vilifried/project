@@ -28,10 +28,10 @@ import {HTTP} from '@ionic-native/http/ngx';
         ImageService,
         CatfactService,
         LocalStorageService,
+        HTTP,
+        {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
         EmailComposer,
         EmailService,
-        HTTP,
-        {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
     ],
     bootstrap: [AppComponent]
 })

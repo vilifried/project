@@ -11,7 +11,8 @@
     <ion-list *ngIf="isAvatarList">
         <ion-item slot="start" *ngFor="let item of localStorageService.itemList; let i = index;">
             <ion-avatar slot="start">
-                <img [src]=item.img>
+                <!--                <img [src]=item.img>-->
+                <img src="../../assets/img/cat.png" alt="cat"/>
             </ion-avatar>
             <ion-label>
                 <h2>{{item.title}}</h2>
@@ -32,7 +33,8 @@
     <ion-list *ngIf="!isAvatarList">
         <ion-item *ngFor="let item of localStorageService.itemList; let i = index;">
             <ion-card (click)="navigateToUpdateCatfact(i)">
-                <img id="cardImg" [src]=item.img>
+                <!--                <img id="cardImg" [src]=item.img>-->
+                <img id="cardImg" src="../../assets/img/cat.png" alt="cat"/>
                 <ion-card-header>
                     <ion-card-title color="primary">
                         {{item.title}}

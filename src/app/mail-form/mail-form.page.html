@@ -39,14 +39,16 @@
             <ion-item>
                 <ion-label>Message:</ion-label>
                 <ion-textarea
-                        formControlName="message" [(ngModel)]="catfactText"></ion-textarea>
+                        formControlName="body" [(ngModel)]="catfactText"
+                        autoGrow="true"></ion-textarea>
             </ion-item>
-            <ion-item>
-                <img id="cardImg" [src]="catImage"/>
-            </ion-item>
-            <ion-item>
-                <ion-button color="primary" [disabled]="!form.valid">Send Mail</ion-button>
-            </ion-item>
+            <!--            <ion-item>-->
+            <!--                <img id="cardImg" [src]="catImage"/>  -->
+            <!--                <img id="cardImg" src="../../assets/img/cat.png" alt="cat"/>-->
+            <!--            </ion-item>-->
+            <ion-button color="primary" [disabled]="!form.valid" (click)="sendMail()"
+            >Send Mail
+            </ion-button>
         </ion-list>
     </form>
 </ion-content>

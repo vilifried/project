@@ -9,11 +9,10 @@ export class EmailService {
     constructor(private emailComposer: EmailComposer) {
     }
 
-
     sendEmail(to: string,
               cc: string,
               bcc: string,
-              attachment: string,
+              // attachment: string,
               subject: string,
               body: string): void {
         // Use the plugin isAvailable method to check whether
@@ -35,9 +34,9 @@ export class EmailService {
                             to: to,
                             cc: cc,
                             bcc: bcc,
-                            attachments: [
-                                attachment
-                            ],
+                            // attachments: [
+                            //     attachment
+                            // ],
                             subject: subject,
                             body: body
                         };
