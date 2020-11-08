@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {LocalStorageService} from '../services/local-storage.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {EmailService} from '../email.service';
 import {EmailComposer} from '@ionic-native/email-composer/ngx';
 
 @Component({
@@ -23,7 +22,6 @@ export class MailFormPage implements OnInit {
                 public localStorageService: LocalStorageService,
                 private route: ActivatedRoute,
                 private router: Router,
-                private _EMAIL: EmailService,
                 public composer: EmailComposer) {
 
         // Create a FormGroup object to implement validation on the template fields
@@ -80,8 +78,6 @@ export class MailFormPage implements OnInit {
             console.log('User does not appear to have device e-mail account');
             console.dir(error);
         });
-
-
     }
 
     ngOnInit() {

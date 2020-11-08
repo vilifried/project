@@ -14,7 +14,6 @@ import {HttpClientModule} from '@angular/common/http';
 import {ImageService} from './services/image.service';
 import {CatfactService} from './services/catfact.service';
 import {LocalStorageService} from './services/local-storage.service';
-import {EmailService} from './email.service';
 import {EmailComposer} from '@ionic-native/email-composer/ngx';
 import {HTTP} from '@ionic-native/http/ngx';
 
@@ -28,10 +27,9 @@ import {HTTP} from '@ionic-native/http/ngx';
         ImageService,
         CatfactService,
         LocalStorageService,
-        HTTP,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
         EmailComposer,
-        EmailService,
+        HTTP,
     ],
     bootstrap: [AppComponent]
 })
