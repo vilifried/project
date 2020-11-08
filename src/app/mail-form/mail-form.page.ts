@@ -29,8 +29,8 @@ export class MailFormPage implements OnInit {
         // Create a FormGroup object to implement validation on the template fields
         this.form = this.formBuilder.group({
             to: ['', Validators.required],
-            cc: ['', Validators.required],
-            bcc: ['', Validators.required],
+            cc: [''],
+            bcc: [''],
             subject: ['', Validators.required],
             body: ['', Validators.required]
         });
@@ -63,15 +63,25 @@ export class MailFormPage implements OnInit {
     }
 
     openEmailComposer(to: string, cc: string, bcc: string, subject: string, body: string) {
-        const email = {
-            to,
-            cc,
-            bcc: [bcc],
-            subject,
-            body,
-            isHtml: true
-        };
-        this.composer.open(email);
+        // Use the plugin isAvailable method to check whether
+        // the user has configured an email account
+        this.composer.isAvailable()
+            .then((available: boolean) => {
+                const email = {
+                    to,
+                    cc,
+                    bcc: [bcc],
+                    subject,
+                    body,
+                    isHtml: true
+                };
+                this.composer.open(email);
+            }).catch((error: any) => {
+            console.log('User does not appear to have device e-mail account');
+            console.dir(error);
+        });
+
+
     }
 
     ngOnInit() {
