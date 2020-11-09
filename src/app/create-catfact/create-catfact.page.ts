@@ -6,7 +6,6 @@ import {ToastController} from '@ionic/angular';
 import {HTTP} from '@ionic-native/http/ngx';
 import {DomSanitizer} from '@angular/platform-browser';
 
-
 enum COLORS {
     GREY = '#E0E0E0',
     GREEN = '#66fd01',
@@ -22,10 +21,8 @@ enum COLORS {
 
 export class CreateCatfactPage implements OnInit {
 
-    //imgUrl = 'https://api.thecatapi.com/v1/images/search?format=src';
-    imgUrl = 'https://aws.random.cat/meow';
+    imgUrl = 'https://api.thecatapi.com/v1/images/search?format=src';
     catImage: any;
-   // catImage: any;
     isImageLoading: boolean;
 
     catFactUrl = 'https://catfact.ninja/fact?max_length=900';
@@ -64,6 +61,7 @@ export class CreateCatfactPage implements OnInit {
                 // prints 200
                 console.log(response.status);
                 this.catfactText = response.data.fact;
+                this.catfactCounter++;
             })
             .catch(response => {
                 // prints 403
@@ -86,9 +84,8 @@ export class CreateCatfactPage implements OnInit {
             .then(response => {
                 // prints 200
                 console.log(response.status);
-                console.log('DATA ' + response.data);
-                console.log('BODY ' + response.data);
                 this.arrayBufferToBase64(response.data);
+                this.isImageLoading = false;
             })
             .catch(response => {
                 // prints 403
@@ -103,16 +100,12 @@ export class CreateCatfactPage implements OnInit {
     arrayBufferToBase64(response) {
         // Converts arraybuffer to typed array object
         const TYPED_ARRAY = new Uint8Array(response);
-        console.log('TYPED ARRAY ' + TYPED_ARRAY);
         // converts the typed array to string of characters
         const STRING_CHAR = String.fromCharCode.apply(null, TYPED_ARRAY);
-        console.log('STRING CHAR ' + STRING_CHAR);
         // converts string of characters to base64String
         const base64String = btoa(STRING_CHAR);
-        console.log('BASE64 STRING ' + base64String);
         // sanitize the url that is passed as a value to image src attribute
         this.catImage = this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64, ' + base64String);
-        console.log('SANITIZER ' + this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64, ' + base64String).toString());
         this.hideProgressBarShowCard();
     }
 
@@ -140,10 +133,9 @@ export class CreateCatfactPage implements OnInit {
     //     this.hideProgressBarShowCard();
     // }
 
-
     getNextItemFromService() {
-         this.getImage();
-         this.getCatfactText();
+        this.getImage();
+        this.getCatfactText();
     }
 
     saveItem() {

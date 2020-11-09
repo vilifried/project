@@ -9,6 +9,7 @@ import {EmailComposer} from '@ionic-native/email-composer/ngx';
     templateUrl: './mail-form.page.html',
     styleUrls: ['./mail-form.page.scss'],
 })
+
 export class MailFormPage implements OnInit {
 
     localStorage: LocalStorageService;

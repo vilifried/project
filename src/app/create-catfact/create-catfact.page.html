@@ -10,8 +10,8 @@
 <ion-content>
     <ion-progress-bar [type]="'indeterminate'" *ngIf="showLoader"></ion-progress-bar>
     <ion-card *ngIf='cardElement'>
-        <!--        <img id="cardImg" [src]="catImage"/>        -->
-        <img id="cardImg" src="../../assets/img/cat.png" alt="cat"/>
+        <img id="cardImg" [src]="catImage"/>
+        <!--        <img id="cardImg" src="../../assets/img/cat.png" alt="cat"/>-->
         <ion-card-header>
             <ion-card-title color="primary">Cat Fact # {{catfactCounter}}</ion-card-title>
         </ion-card-header>
