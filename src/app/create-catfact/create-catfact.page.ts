@@ -49,7 +49,7 @@ export class CreateCatfactPage implements OnInit {
                 protected sanitizer: DomSanitizer) {
     }
 
-    getCatfactText() {
+    getCatfactTextFromApi() {
         this.isCatFactLoading = true;
         this.http.sendRequest(this.catFactUrl,
             {
@@ -60,6 +60,7 @@ export class CreateCatfactPage implements OnInit {
             .then(response => {
                 // prints 200
                 console.log(response.status);
+                console.log('HEADERS ' + response.headers);
                 this.catfactText = response.data.fact;
                 this.catfactCounter++;
             })
@@ -71,19 +72,23 @@ export class CreateCatfactPage implements OnInit {
             });
     }
 
-    getImage() {
+    getImageFromApi() {
         this.showProgressBarHideCard();
         this.isImageLoading = true;
 
         this.http.sendRequest(this.imgUrl,
             {
                 method: 'get',
-                responseType: 'arraybuffer'
+                responseType: 'arraybuffer',
+                headers: {
+                    'x-api-key': '752f82d2-0191-4b4b-be84-52016e41f618'
+                }
             }
         )
             .then(response => {
                 // prints 200
                 console.log(response.status);
+                console.log('HEADERS ' + response.headers);
                 this.arrayBufferToBase64(response.data);
                 this.isImageLoading = false;
             })
@@ -134,8 +139,8 @@ export class CreateCatfactPage implements OnInit {
     // }
 
     getNextItemFromService() {
-        this.getImage();
-        this.getCatfactText();
+        this.getImageFromApi();
+        this.getCatfactTextFromApi();
     }
 
     saveItem() {
@@ -210,10 +215,8 @@ export class CreateCatfactPage implements OnInit {
     ngOnInit() {
         this.catfactCounter = 0;
         this.localStorageService.readStorage().then((value) => {
-            // this.getBlobFromService();
-            this.getImage();
-            this.getCatfactText();
-            // this.getHttpResponseObjectFromService();
+            this.getImageFromApi();
+            this.getCatfactTextFromApi();
         });
     }
 }
