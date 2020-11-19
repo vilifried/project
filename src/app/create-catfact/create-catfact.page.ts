@@ -1,6 +1,4 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {CatfactService} from '../services/catfact.service';
-import {ImageService} from '../services/image.service';
 import {LocalStorageService} from '../services/local-storage.service';
 import {ToastController} from '@ionic/angular';
 import {HTTP} from '@ionic-native/http/ngx';
@@ -21,6 +19,7 @@ enum COLORS {
 
 export class CreateCatfactPage implements OnInit {
 
+    // imgUrl = 'https://api.thecatapi.com/v1/images/search';
     imgUrl = 'https://api.thecatapi.com/v1/images/search?format=src';
     catImage: any;
     isImageLoading: boolean;
@@ -41,13 +40,40 @@ export class CreateCatfactPage implements OnInit {
     @Input() rating: number;
     @Output() ratingChange: EventEmitter<number> = new EventEmitter();
 
-    constructor(private catfactService: CatfactService,
-                private imageService: ImageService,
-                private localStorageService: LocalStorageService,
+    constructor(private localStorageService: LocalStorageService,
                 private toastController: ToastController,
                 private http: HTTP,
                 protected sanitizer: DomSanitizer) {
     }
+
+    // ajax_get(url, callback) {
+    //     const xmlhttp = new XMLHttpRequest();
+    //     xmlhttp.onreadystatechange = () => {
+    //         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+    //             console.log('responseText:' + xmlhttp.responseText);
+    //             try {
+    //                 const data = JSON.parse(xmlhttp.responseText);
+    //                 callback(data);
+    //             } catch (err) {
+    //                 console.log(err.message + ' in ' + xmlhttp.responseText);
+    //                 return;
+    //             }
+    //
+    //         }
+    //     };
+    //
+    //     xmlhttp.open('GET', url, true);
+    //     xmlhttp.send();
+    // }
+    //
+    // getI() {
+    //     this.ajax_get('https://api.thecatapi.com/v1/images/search?size=full', data => {
+    //         let id = data[0]['id'];
+    //         let url = data[0]['url'];
+    //         let html = '<img src="' + data[0]['url'] + '">';
+    //         console.log('URL' + url);
+    //     });
+    // }
 
     getCatfactTextFromApi() {
         this.isCatFactLoading = true;
@@ -60,7 +86,6 @@ export class CreateCatfactPage implements OnInit {
             .then(response => {
                 // prints 200
                 console.log(response.status);
-                console.log('HEADERS ' + response.headers);
                 this.catfactText = response.data.fact;
                 this.catfactCounter++;
             })
@@ -95,7 +120,7 @@ export class CreateCatfactPage implements OnInit {
             .catch(response => {
                 // prints 403
                 console.log(response.status);
-                console.log('ERROR');
+                console.log('GET IMG ERROR');
                 // prints Permission denied
                 console.log(response.error);
                 this.isImageLoading = false;
@@ -144,10 +169,13 @@ export class CreateCatfactPage implements OnInit {
     }
 
     saveItem() {
+        console.log('SAVE');
         if (this.rating === undefined) {
             this.rating = 0;
         }
+        console.log('TEXT' + this.catfactTitle + this.catfactText);
         this.localStorageService.addItem(this.catfactTitle, this.catImage, this.catfactText, this.rating);
+
         this.hideTitleInput();
         this.presentToast();
         this.catfactTitle = '';
@@ -215,6 +243,7 @@ export class CreateCatfactPage implements OnInit {
     ngOnInit() {
         this.catfactCounter = 0;
         this.localStorageService.readStorage().then((value) => {
+            console.log('NG ON INIT');
             this.getImageFromApi();
             this.getCatfactTextFromApi();
         });

@@ -2,9 +2,6 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {LocalStorageService} from '../services/local-storage.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AlertController, ToastController} from '@ionic/angular';
-import {CatfactService} from '../services/catfact.service';
-import {ImageService} from '../services/image.service';
-import {HttpResponse} from '@angular/common/http';
 
 enum COLORS {
     GREY = '#E0E0E0',
@@ -46,9 +43,7 @@ export class UpdateCatfactPage implements OnInit {
                 private router: Router,
                 private localStorageService: LocalStorageService,
                 private alertController: AlertController,
-                private toastController: ToastController,
-                private catfactService: CatfactService,
-                private imageService: ImageService
+                private toastController: ToastController
     ) {
         if (this.route.snapshot.paramMap.get('itemId')) {
             this.itemId = Number(this.route.snapshot.paramMap.get('itemId'));
@@ -100,23 +95,23 @@ export class UpdateCatfactPage implements OnInit {
         this.getBlobFromService();
     }
 
-    getHttpResponseObjectFromService() {
-        this.isCatFactLoading = true;
-        this.catfactService.getCatFact(this.catFactsUrl).subscribe(data => {
-            this.createStringFromHttpResponseObject(data);
-            this.isCatFactLoading = false;
-        }, error => {
-            this.isCatFactLoading = false;
-            console.log(error);
-        });
-    }
-
-    createStringFromHttpResponseObject(response: HttpResponse<any>) {
-        this.catfactText = response.body.fact;
-    }
+    // getHttpResponseObjectFromService() {
+    //     this.isCatFactLoading = true;
+    //     this.catfactService.getCatFact(this.catFactsUrl).subscribe(data => {
+    //         this.createStringFromHttpResponseObject(data);
+    //         this.isCatFactLoading = false;
+    //     }, error => {
+    //         this.isCatFactLoading = false;
+    //         console.log(error);
+    //     });
+    // }
+    //
+    // createStringFromHttpResponseObject(response: HttpResponse<any>) {
+    //     this.catfactText = response.body.fact;
+    // }
 
     getNextCatFactText() {
-        this.getHttpResponseObjectFromService();
+        //   this.getHttpResponseObjectFromService();
     }
 
     showProgressBarHideImg() {
