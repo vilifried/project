@@ -133,7 +133,7 @@ export class ListCatfactsPage implements OnInit {
 
     ngOnInit() {
         this.localStorageService.readStorage().then((value) => {
-            //   this.sortArray();
+            console.log('LISTCATFACT ' + typeof (this.localStorageService.itemList[0].img));
         });
     }
 }

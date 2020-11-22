@@ -19,8 +19,8 @@ enum COLORS {
 
 export class CreateCatfactPage implements OnInit {
 
-    // imgUrl = 'https://api.thecatapi.com/v1/images/search';
-    imgUrl = 'https://api.thecatapi.com/v1/images/search?format=src';
+    imgUrl = 'https://api.thecatapi.com/v1/images/search';
+    // imgUrl = 'https://api.thecatapi.com/v1/images/search?format=src';
     catImage: any;
     isImageLoading: boolean;
 
@@ -28,11 +28,8 @@ export class CreateCatfactPage implements OnInit {
     isCatFactLoading: boolean;
     catfactText: string;
     catfactCounter: number;
-
     showLoader: boolean;
-
     catfactTitle: string;
-
     titleInputElement = false;
     cardElement = true;
     footerButtons = true;
@@ -46,35 +43,6 @@ export class CreateCatfactPage implements OnInit {
                 protected sanitizer: DomSanitizer) {
     }
 
-    // ajax_get(url, callback) {
-    //     const xmlhttp = new XMLHttpRequest();
-    //     xmlhttp.onreadystatechange = () => {
-    //         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-    //             console.log('responseText:' + xmlhttp.responseText);
-    //             try {
-    //                 const data = JSON.parse(xmlhttp.responseText);
-    //                 callback(data);
-    //             } catch (err) {
-    //                 console.log(err.message + ' in ' + xmlhttp.responseText);
-    //                 return;
-    //             }
-    //
-    //         }
-    //     };
-    //
-    //     xmlhttp.open('GET', url, true);
-    //     xmlhttp.send();
-    // }
-    //
-    // getI() {
-    //     this.ajax_get('https://api.thecatapi.com/v1/images/search?size=full', data => {
-    //         let id = data[0]['id'];
-    //         let url = data[0]['url'];
-    //         let html = '<img src="' + data[0]['url'] + '">';
-    //         console.log('URL' + url);
-    //     });
-    // }
-
     getCatfactTextFromApi() {
         this.isCatFactLoading = true;
         this.http.sendRequest(this.catFactUrl,
@@ -85,9 +53,41 @@ export class CreateCatfactPage implements OnInit {
         )
             .then(response => {
                 // prints 200
-                console.log(response.status);
+                console.log('CATFACT ' + response.status);
                 this.catfactText = response.data.fact;
                 this.catfactCounter++;
+            })
+            .catch(response => {
+                // prints 403
+                console.log('CATFCT ERROR' + response.status);
+                // prints Permission denied
+                console.log(response.error);
+            });
+    }
+
+    getImgUrlFromApi() {
+        this.isCatFactLoading = true;
+        this.http.sendRequest(this.imgUrl,
+            {
+                method: 'get',
+                responseType: 'json',
+                params: {image_type: 'jpg'},
+                headers: {
+                    'x-api-key': '752f82d2-0191-4b4b-be84-52016e41f618'
+                }
+            }
+        )
+            .then(response => {
+                // prints 200
+                console.log(response.status);
+                console.log('RESP ' + response.data[0].url);
+                const url = response.data[0].url;
+                const fileExtension = url.substr(url.lastIndexOf('.') + 1);
+                if (fileExtension === 'gif') {
+                    this.getImgUrlFromApi();
+                } else {
+                    this.getImageFromApi(url);
+                }
             })
             .catch(response => {
                 // prints 403
@@ -97,23 +97,19 @@ export class CreateCatfactPage implements OnInit {
             });
     }
 
-    getImageFromApi() {
+    getImageFromApi(url) {
         this.showProgressBarHideCard();
         this.isImageLoading = true;
-
-        this.http.sendRequest(this.imgUrl,
+        this.http.sendRequest(url,
             {
                 method: 'get',
                 responseType: 'arraybuffer',
-                headers: {
-                    'x-api-key': '752f82d2-0191-4b4b-be84-52016e41f618'
-                }
             }
         )
             .then(response => {
                 // prints 200
                 console.log(response.status);
-                console.log('HEADERS ' + response.headers);
+                //     console.log('HEADERS ' + response.headers);
                 this.arrayBufferToBase64(response.data);
                 this.isImageLoading = false;
             })
@@ -121,6 +117,7 @@ export class CreateCatfactPage implements OnInit {
                 // prints 403
                 console.log(response.status);
                 console.log('GET IMG ERROR');
+                this.getImgUrlFromApi();
                 // prints Permission denied
                 console.log(response.error);
                 this.isImageLoading = false;
@@ -164,8 +161,8 @@ export class CreateCatfactPage implements OnInit {
     // }
 
     getNextItemFromService() {
-        this.getImageFromApi();
         this.getCatfactTextFromApi();
+        this.getImgUrlFromApi();
     }
 
     saveItem() {
@@ -175,7 +172,7 @@ export class CreateCatfactPage implements OnInit {
         }
         console.log('TEXT' + this.catfactTitle + this.catfactText);
         this.localStorageService.addItem(this.catfactTitle, this.catImage, this.catfactText, this.rating);
-
+        console.log('CATIMG ');
         this.hideTitleInput();
         this.presentToast();
         this.catfactTitle = '';
@@ -243,9 +240,8 @@ export class CreateCatfactPage implements OnInit {
     ngOnInit() {
         this.catfactCounter = 0;
         this.localStorageService.readStorage().then((value) => {
-            console.log('NG ON INIT');
-            this.getImageFromApi();
             this.getCatfactTextFromApi();
+            this.getImgUrlFromApi();
         });
     }
 }

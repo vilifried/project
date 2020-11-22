@@ -12,14 +12,21 @@ export class LocalStorageService {
     }
 
     async readStorage() {
-        await this.nativeStorage.getItem('localCatfactList').then(val => {
-            this._itemList = val;
-            if (this._itemList === null) {
+        try {
+            if (this._itemList === undefined) {
                 this._itemList = [];
-                this.nativeStorage.setItem('localCatfactList', this._itemList);
+                await this.nativeStorage.setItem('localCatfactList', this._itemList);
+            } else {
+                await this.nativeStorage.getItem('localCatfactList').then(val => {
+                    console.log('VALUE1 ' + val);
+                    this._itemList = val;
+                    console.log('VALUE2 ' + val);
+                    return this._itemList;
+                });
             }
-            return this._itemList;
-        });
+        } catch (e) {
+
+        }
     }
 
     addItem(titleToAdd: string, imgToAdd: any, catfactToAdd: string, ratingToAdd: number) {
